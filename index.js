@@ -6,6 +6,7 @@ const cors = require("cors");
 const { clerkMiddleware, requireAuth } = require("@clerk/express");
 const { clerkWebhooks } = require("./controllers/webhooks.controller");
 const connection = require("./db/db");
+const { createCheckoutSession,  webhookController } = require("./controllers/payment.controller");
 
 const app = express();
 
@@ -37,6 +38,9 @@ app.post(
 );
 
 
+app.post('/payment', createCheckoutSession);
+
+app.post('/stripe', express.raw({type: 'application/json'}), webhookController);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
