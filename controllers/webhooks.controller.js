@@ -11,18 +11,24 @@ const clerkWebhooks = async (req, res) => {
     return res.status(400).json({ error: "Missing Svix headers" });
   }
 
+
   const payload = JSON.stringify(req.body);
+  console.log('payload', payload)
   const headers = {
     "svix-id": svix_id,
     "svix-timestamp": svix_timestamp,
     "svix-signature": svix_signature,
   };
 
+  console.log(headers,"header")
   const wh = new Webhook(process.env.CLERK_WEBHOOKS_SECRET);
 
+  console.log("wh" , wh)
   let evt;
   try {
-    evt = wh.verify(payload, headers); // Verify signature
+    evt = wh.verify(payload, headers); 
+    // Verify signature
+    console.log(evt)
   } catch (err) {
     console.error("Webhook verification failed:", err.message);
     return res.status(400).json({ error: "Invalid webhook signature" });
@@ -39,6 +45,7 @@ const clerkWebhooks = async (req, res) => {
           name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
           imageUrl: data.image_url,
         };
+        console.log("data", userData)
         await User.create(userData);
         break;
       }
