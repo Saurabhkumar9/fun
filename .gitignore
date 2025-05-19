@@ -1,0 +1,20 @@
+# .gitignore
+
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Logs
+logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+App.js
+# Build output
+dist/
+build/
